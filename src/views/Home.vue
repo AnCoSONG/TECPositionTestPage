@@ -13,13 +13,13 @@ import { questions } from "../utils";
 export default {
   name: "Home",
   components: {
-    QBox,
+    QBox
   },
   data() {
     return {
       hello: "123",
       questions: questions,
-      index: 0,
+      index: 0
     };
   },
   computed: {
@@ -28,7 +28,7 @@ export default {
     },
     points() {
       return this.$store.state.points;
-    },
+    }
   },
   created() {
     console.log("created");
@@ -52,7 +52,7 @@ export default {
     //   window.$("#box").css("visibility", "visible");
     //   animateCSS("#box", ["bounceInUp",'fast']);
     // }
-  },
+  }
 };
 </script>
 

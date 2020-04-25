@@ -20,7 +20,7 @@
 export default {
   name: "QBox",
   props: {
-    template: Object,
+    template: Object
   },
 
   computed: {},
@@ -37,8 +37,8 @@ export default {
       } else {
         console.log("Error answer effects");
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

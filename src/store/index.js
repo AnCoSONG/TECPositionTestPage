@@ -8,7 +8,7 @@ const exchange = {
   B: "DG",
   C: "RD",
   D: "OP",
-  E: "PL",
+  E: "PL"
 };
 
 export default new Vuex.Store({
@@ -20,8 +20,8 @@ export default new Vuex.Store({
       PM: 0, // 产品
       PL: 0, // 策划
       DG: 0, // 设计
-      OP: 0, // 运营
-    },
+      OP: 0 // 运营
+    }
   },
   mutations: {
     loaded(state) {
@@ -29,14 +29,14 @@ export default new Vuex.Store({
     },
     addPoints(state, payload) {
       if (Array.isArray(payload)) {
-        payload.forEach((p) => {
+        payload.forEach(p => {
           state.points[exchange[p]] += 1;
         });
       } else {
         state.points[exchange[payload]] += 1;
       }
-    },
+    }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });

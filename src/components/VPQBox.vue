@@ -60,10 +60,10 @@ export default {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  color: #ddd;
+  color: #eee;
   box-sizing: border-box;
   padding: 0px 20px;
-  text-shadow: 0 2px 4px;
+  // text-shadow: 0 2px 4px;
   font-family: FZKTJ;
 
   .qtext {

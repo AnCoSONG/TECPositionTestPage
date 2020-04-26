@@ -1,18 +1,18 @@
 <template>
   <div class="vpQBox">
-    <h4 class="qtext">{{template.id+" "+template.q }}</h4>
-    <h5 class="qAnswer" @click="done(template.a.effect)">
+    <div class="qtext">{{ template.id + " " + template.q }}</div>
+    <div class="qAnswer" @click="done(template.a.effect)">
       A : {{ template.a.text }}
-    </h5>
-    <h5 class="qAnswer" @click="done(template.b.effect)">
+    </div>
+    <div class="qAnswer" @click="done(template.b.effect)">
       B : {{ template.b.text }}
-    </h5>
-    <h5 class="qAnswer" @click="done(template.c.effect)">
+    </div>
+    <div class="qAnswer" @click="done(template.c.effect)">
       C : {{ template.c.text }}
-    </h5>
-    <h5 class="qAnswer" @click="done(template.d.effect)">
+    </div>
+    <div class="qAnswer" @click="done(template.d.effect)">
       D : {{ template.d.text }}
-    </h5>
+    </div>
   </div>
 </template>
 
@@ -20,7 +20,7 @@
 export default {
   name: "VPQBox",
   props: {
-    template: Object
+    template: Object,
   },
 
   computed: {},
@@ -37,25 +37,23 @@ export default {
       } else {
         console.log("Error answer effects");
       }
-    }
-  }
+      this.$emit("done",'1');
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: FZKTJ;
-  src: url("../assets/fonts/fzktj.ttf");
-}
 .vpQBox {
-  position:absolute;
-  top:0;
+  position: absolute;
+  top:101%;
+  transition: all 1000ms ease-in-out;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 320px;
-  height: 480px;
-  background-color: white;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
   background-image: url("../assets/prog/h5bg.jpg");
   background-size: contain;
   background-repeat: no-repeat;
@@ -65,6 +63,13 @@ export default {
   padding: 0px 20px;
   // text-shadow: 0 2px 4px;
   font-family: FZKTJ;
+  user-select: none;
+  z-index:1000;
+
+  // .inner_box {
+  //   height: 400px;
+  //   width: 100%;
+  // }
 
   .qtext {
     margin-top: 120px;
@@ -72,6 +77,7 @@ export default {
     text-align: left;
     margin-left: 3px;
     line-height: 20px;
+    user-select: none;
   }
 
   .qAnswer {
@@ -79,6 +85,7 @@ export default {
     text-align: left;
     letter-spacing: 3px;
     margin-left: 3px;
+    user-select: none;
   }
 }
 </style>

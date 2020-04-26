@@ -63,7 +63,7 @@ export default {
   color: #ddd;
   box-sizing: border-box;
   padding: 0px 20px;
-  text-shadow: 0 0px 1px;
+  text-shadow: 0 2px 4px;
   font-family: FZKTJ;
 
   .qtext {

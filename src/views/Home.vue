@@ -131,7 +131,7 @@ export default {
           window.$('#Q1').addClass("cur").css('top',"0");
           break;
         case "Q2":
-          window.$("#Q1").removeClass("cur").css('top',"-101%");
+          window.$("#Q1").removeClass("cur");
           window.$("#Q2").addClass("cur").css('top',"0");
           break;
         
@@ -154,6 +154,7 @@ export default {
 }
 div{
   user-select: none;
+  outline:none; //去掉点击效果
 }
 .home {
   min-width: 320px;

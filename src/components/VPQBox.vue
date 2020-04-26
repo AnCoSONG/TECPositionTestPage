@@ -72,12 +72,13 @@ export default {
   // }
 
   .qtext {
-    margin-top: 120px;
+    margin-top: 50%;
     letter-spacing: 3px;
     text-align: left;
     margin-left: 3px;
-    line-height: 20px;
+    line-height: 1.8rem;
     user-select: none;
+    font-size: 1.4rem;
   }
 
   .qAnswer {
@@ -85,6 +86,9 @@ export default {
     text-align: left;
     letter-spacing: 3px;
     margin-left: 3px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
     user-select: none;
   }
 }

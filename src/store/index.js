@@ -61,6 +61,7 @@ export default new Vuex.Store({
       } else {
         state.points[exchange[payload]] += 1;
       }
+      console.log("current points", state.points)
     },
   },
   actions: {},

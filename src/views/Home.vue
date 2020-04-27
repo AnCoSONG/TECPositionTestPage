@@ -17,7 +17,7 @@
       <VPQBox id="Q6" :template="questions[5]" @done="nextProcess" />
       <VPQBox id="Q7" :template="questions[6]" @done="nextProcess" />
       <div id="result">
-        结果页
+        <h1>{{getTestResult()}}</h1>
       </div>
     </div>
   </div>
@@ -214,6 +214,13 @@ export default {
           break;
       }
     },
+
+    getTestResult(){
+      
+      const maxVal = Math.max(...Object.values(this.points))
+      console.log(maxVal);
+      return Object.keys(this.points).filter(e=>this.points[e]===maxVal).toString();
+    }
   },
 };
 </script>
@@ -350,6 +357,7 @@ div {
     font-size: 1.6rem;
     color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: absolute;

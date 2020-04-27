@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "fzktj";
+    src: url("fzktj.eot"); /* IE9 */
+    src: url("fzktj.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    
+    url("fzktj.woff") format("woff"), /* chrome、firefox */
+    url("fzktj.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+    
+    url("fzktj.svg#fzktj") format("svg"); /* iOS 4.1- */
+    font-style: normal;
+    font-weight: normal;
+}
+
+

@@ -8,7 +8,7 @@ const exchange = {
   B: "DG",
   C: "RD",
   D: "OP",
-  E: "PL",
+  E: "PL"
 };
 
 const processList = [
@@ -21,7 +21,7 @@ const processList = [
   "Q5",
   "Q6",
   "Q7",
-  "displaying",
+  "displaying"
 ];
 
 export default new Vuex.Store({
@@ -35,8 +35,8 @@ export default new Vuex.Store({
       PM: 0, // 产品
       PL: 0, // 策划
       DG: 0, // 设计
-      OP: 0, // 运营
-    },
+      OP: 0 // 运营
+    }
   },
   mutations: {
     loaded(state) {
@@ -50,20 +50,20 @@ export default new Vuex.Store({
             : state.currentProcessId
         ];
     },
-    setProcess(state,payload){
-      state.currentProcess = payload
+    setProcess(state, payload) {
+      state.currentProcess = payload;
     },
     addPoints(state, payload) {
       if (Array.isArray(payload)) {
-        payload.forEach((p) => {
+        payload.forEach(p => {
           state.points[exchange[p]] += 1;
         });
       } else {
         state.points[exchange[payload]] += 1;
       }
-      console.log("current points", state.points)
-    },
+      console.log("current points", state.points);
+    }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });

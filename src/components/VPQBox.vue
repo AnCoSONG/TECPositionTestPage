@@ -1,18 +1,30 @@
 <template>
-  <div class="vpQBox">
+  <div class="vpQBox" :style="{ 'background-image': 'url(' + imgUrl + ')' }">
     <div class="inner_box">
       <div class="qtext">{{ template.id + " " + template.q }}</div>
       <div class="qAnswer" @click="done(template.a.effect)">
-        A : {{ template.a.text }}
+        <div style="display:inline-block;margin-right:5px;">A:</div>
+        <div>
+          {{ template.a.text }}
+        </div>
       </div>
       <div class="qAnswer" @click="done(template.b.effect)">
-        B : {{ template.b.text }}
+        <div style="display:inline-block;margin-right:5px;">B:</div>
+        <div>
+          {{ template.b.text }}
+        </div>
       </div>
       <div class="qAnswer" @click="done(template.c.effect)">
-        C : {{ template.c.text }}
+        <div style="display:inline-block;margin-right:5px;">C:</div>
+        <div>
+          {{ template.c.text }}
+        </div>
       </div>
       <div class="qAnswer" @click="done(template.d.effect)">
-        D : {{ template.d.text }}
+        <div style="display:inline-block;margin-right:5px;">D:</div>
+        <div>
+          {{ template.d.text }}
+        </div>
       </div>
     </div>
   </div>
@@ -23,6 +35,7 @@ export default {
   name: "VPQBox",
   props: {
     template: Object,
+    imgUrl: String
   },
 
   computed: {},
@@ -39,9 +52,9 @@ export default {
       } else {
         console.log("Error answer effects");
       }
-      this.$emit("done",'1');
-    },
-  },
+      this.$emit("done", "1");
+    }
+  }
 };
 </script>
 
@@ -49,7 +62,7 @@ export default {
 .vpQBox {
   position: absolute;
   visibility: hidden;
-  top:0;
+  top: 0;
   // transition: all 1000ms ease-in-out;
   left: 0;
   right: 0;
@@ -57,7 +70,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: transparent;
-  background-image: url("../assets/prog/h5bg.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -67,13 +79,13 @@ export default {
   // text-shadow: 0 2px 4px;
   font-family: FZKTJ;
   user-select: none;
-  z-index:1000;
+  z-index: 1000;
 
   .inner_box {
-    position:relative;
-    top:50%;
+    position: relative;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
   }
   // .inner_box {
   //   height: 400px;
@@ -94,25 +106,27 @@ export default {
     text-align: left;
     letter-spacing: 3px;
     margin-left: 3px;
-    margin-top: 20px;
+    margin-top: 30px;
     line-height: 1.4rem;
     font-size: 1.2rem;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     user-select: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
-  @media screen and (max-width:400px) {
-
+  @media screen and (max-width: 400px) {
     .qtext {
-      font-size: 16px;
+      font-size: 20px;
       line-height: 24px;
     }
 
     .qAnswer {
-      font-size: 12px;
-      line-height: 16px;
+      font-size: 17px;
+      line-height: 20px;
     }
-    
   }
 }
 </style>

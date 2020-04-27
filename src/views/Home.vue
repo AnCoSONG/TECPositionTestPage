@@ -9,13 +9,16 @@
         <div class="slogen">你最适合8号星球上的什么岗位？</div>
         <div class="startBtn" @click="nextProcess">开始测试</div>
       </div>
-      <VPQBox id="Q1" :template="questions[0]" @done="nextProcess"/>
-      <VPQBox id="Q2" :template="questions[1]" @done="nextProcess"/>
-      <!-- <VPQBox class="next_2" :template="questions[2]" />
-      <VPQBox class="next_3" :template="questions[3]" />
-      <VPQBox class="next_4" :template="questions[4]" />
-      <VPQBox class="next_5" :template="questions[5]" />
-      <VPQBox class="next_6" :template="questions[6]" /> -->
+      <VPQBox id="Q1" :template="questions[0]" @done="nextProcess" />
+      <VPQBox id="Q2" :template="questions[1]" @done="nextProcess" />
+      <VPQBox id="Q3" :template="questions[2]" @done="nextProcess" />
+      <VPQBox id="Q4" :template="questions[3]" @done="nextProcess" />
+      <VPQBox id="Q5" :template="questions[4]" @done="nextProcess" />
+      <VPQBox id="Q6" :template="questions[5]" @done="nextProcess" />
+      <VPQBox id="Q7" :template="questions[6]" @done="nextProcess" />
+      <div id="result">
+        结果页
+      </div>
     </div>
   </div>
 </template>
@@ -71,12 +74,12 @@ export default {
     //* 首屏展示逻辑
     var interval = setInterval(() => {
       // 检查
-      console.log(this.curProc)
+      console.log(this.curProc);
       if (window.loadDone && !(this.curProc === "index")) {
         window.$("#index").css("visibility", "visible");
-        animateCSS("#index", ["slideInUp", "fast"], () => {
+        animateCSS("#index", ["slideInUp"], () => {
           setTimeout(() => {
-            document.querySelector("#viewport").classList.add("box-shadow");
+            // document.querySelector("#viewport").classList.add("box-shadow");
             window.$(".title").css("visibility", "visible");
             animateCSS(".title", ["bounceInDown"], () => {
               window.$(".slogen").css("visibility", "visible");
@@ -93,29 +96,30 @@ export default {
         window.clearInterval(interval);
       }
     }, 50);
-    console.log(this.curProc)
-    if (this.curProc === "index") {
-      window.clearInterval(interval);
-      window.$("#index").css("visibility", "visible");
-      animateCSS("#index", ["slideInUp", "fast"], () => {
-        setTimeout(() => {
-          document.querySelector("#viewport").classList.add("box-shadow");
-          window.$(".title").css("visibility", "visible");
-          animateCSS(".title", ["bounceInDown"], () => {
-            window.$(".slogen").css("visibility", "visible");
-            animateCSS(".slogen", ["flipInX"], () => {
-              window.$(".startBtn").css("visibility", "visible");
-              animateCSS(".startBtn", ["bounceIn"], () => {
-                document.querySelector(".startBtn").classList.add("fluent");
-              });
-            });
-          });
-        }, 50);
-      });
-    }else if(window.loadDone){
-      window.clearInterval(interval)
-      this.$store.commit("setProcess","index");
+    console.log(this.curProc);
+    if (window.loadDone) {
+      window.location.reload();
     }
+    // if (this.curProc === "index" || window.loadDone) {
+    //   this.$store.commit("setProcess", "index");
+    //   window.clearInterval(interval);
+    //   window.$("#index").css("visibility", "visible");
+    //   animateCSS("#index", ["slideInUp", "fast"], () => {
+    //     setTimeout(() => {
+    //       // document.querySelector("#viewport").classList.add("box-shadow");
+    //       window.$(".title").css("visibility", "visible");
+    //       animateCSS(".title", ["bounceInDown"], () => {
+    //         window.$(".slogen").css("visibility", "visible");
+    //         animateCSS(".slogen", ["flipInX"], () => {
+    //           window.$(".startBtn").css("visibility", "visible");
+    //           animateCSS(".startBtn", ["bounceIn"], () => {
+    //             document.querySelector(".startBtn").classList.add("fluent");
+    //           });
+    //         });
+    //       });
+    //     }, 50);
+    //   });
+    // }
   },
 
   methods: {
@@ -127,16 +131,83 @@ export default {
         case "index":
           break;
         case "Q1":
-          console.log("in Q1")
-          window.$('#Q1').addClass("cur").css('top',"0");
+          console.log("in Q1");
+          animateCSS("#index", ["zoomOut"], () => {
+            window.$("#index").css("visibility", "hidden");
+            window.$("#index .title").css("visibility", "hidden");
+            window.$("#index .slogen").css("visibility", "hidden");
+            window.$("#index .startBtn").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q1").css("visibility", "visible");
+            animateCSS("#Q1", ["slideInUp"], () => {
+              window.$("#Q1").addClass("box-shadow");
+            });
+          }, 200);
           break;
         case "Q2":
-          window.$("#Q1").removeClass("cur");
-          window.$("#Q2").addClass("cur").css('top',"0");
+          animateCSS("#Q1", ["zoomOut"], () => {
+            window.$("#Q1").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q2").css("visibility", "visible");
+            animateCSS("#Q2", ["slideInUp"]);
+          }, 200);
           break;
-        
+        case "Q3":
+          animateCSS("#Q2", ["zoomOut"], () => {
+            window.$("#Q2").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q3").css("visibility", "visible");
+            animateCSS("#Q3", ["slideInUp"]);
+          }, 200);
+          break;
+        case "Q4":
+          animateCSS("#Q3", ["zoomOut"], () => {
+            window.$("#Q3").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q4").css("visibility", "visible");
+            animateCSS("#Q4", ["slideInUp"]);
+          }, 200);
+          break;
+        case "Q5":
+          animateCSS("#Q4", ["zoomOut"], () => {
+            window.$("#Q4").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q5").css("visibility", "visible");
+            animateCSS("#Q5", ["slideInUp"]);
+          }, 200);
+          break;
+        case "Q6":
+          animateCSS("#Q5", ["zoomOut"], () => {
+            window.$("#Q5").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q6").css("visibility", "visible");
+            animateCSS("#Q6", ["slideInUp"]);
+          }, 200);
+          break;
+        case "Q7":
+          animateCSS("#Q6", ["zoomOut"], () => {
+            window.$("#Q6").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#Q7").css("visibility", "visible");
+            animateCSS("#Q7", ["slideInUp"]);
+          }, 200);
+          break;
         case "displaying":
-          console.log("in displaying")
+          console.log("in displaying");
+          animateCSS("#Q7", ["zoomOut"], () => {
+            window.$("#Q7").css("visibility", "hidden");
+          });
+          setTimeout(() => {
+            window.$("#result").css("visibility", "visible");
+            animateCSS("#result", ["slideInUp"]);
+          }, 200);
           break;
         default:
           console.error("words spell error", this.curProc);
@@ -152,13 +223,13 @@ export default {
   font-family: FZKTJ;
   src: url("../assets/fonts/fzktj.ttf");
 }
-div{
+div {
   user-select: none;
-  outline:none; //去掉点击效果
+  outline: none; //去掉点击效果
 }
 .home {
   min-width: 320px;
-  background-color: #222;
+  background-color: #111;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -176,12 +247,7 @@ div{
   transition: box-shadow 0.3s ease-in-out;
   font-family: FZKTJ;
 
-  .cur {
-    z-index: 1100;
-  }
-
   #index {
-    background-image: url("../assets/prog/h5bg.jpg");
     background-image: url("../assets/prog/h5bg.jpg");
     background-size: contain;
     background-repeat: no-repeat;
@@ -206,8 +272,6 @@ div{
       visibility: hidden;
       font-size: 1.3rem;
       margin: 20px 0px;
-      padding-bottom: 20px;
-      border-bottom: 2px dashed white;
     }
 
     .startBtn {
@@ -217,11 +281,11 @@ div{
       background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #0ea9f4);
       background-size: 400%;
       z-index: 1;
-      position: relative;
+      position: absolute;
       display: flex;
       justify-content: center;
       align-items: center;
-      bottom: -100px;
+      bottom: 15vh;
       font-size: 1.3rem;
       cursor: pointer;
       visibility: hidden;
@@ -245,10 +309,54 @@ div{
     }
 
     @keyframes fluent {
-      100%{
+      100% {
         background-position: -400% 0;
       }
     }
+  }
+
+  #Q1 {
+    z-index: 1001;
+  }
+
+  #Q2 {
+    z-index: 1002;
+  }
+  #Q3 {
+    z-index: 1003;
+  }
+  #Q4 {
+    z-index: 1004;
+  }
+  #Q5 {
+    z-index: 1005;
+  }
+  #Q6 {
+    z-index: 1006;
+  }
+  #Q7 {
+    z-index: 1007;
+  }
+
+  #result {
+    z-index: 1008;
+    background-image: url("../assets/prog/h5bg.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    font-size: 1.6rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   .curBox {
@@ -291,10 +399,26 @@ div{
 } */
 
 @media screen and (max-width: 400px) {
-  #viewport {
-    box-shadow: 0 0px 6px 0 rgba(0, 0, 0, 1);
-    // width: 100vw;
-    // height: 150vw;
+  #viewport #index .title {
+    visibility: hidden;
+    font-size: 1.8rem;
+    margin: 10px 0px;
+  }
+
+  #viewport #index .slogen {
+    visibility: hidden;
+    font-size: 16px;
+    margin: 20px 0px;
+    padding-bottom: 20px;
+    border-bottom: none;
+  }
+
+  #viewport #index .startBtn {
+    width: 120px;
+    height: 44px;
+    font-size: 14px;
+    bottom: 10vh;
+    border-radius: 22px;
   }
 }
 </style>

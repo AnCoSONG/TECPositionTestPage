@@ -20,7 +20,7 @@
 export default {
   name: "QBox",
   props: {
-    template: Object
+    template: Object,
   },
 
   computed: {},
@@ -37,8 +37,8 @@ export default {
       } else {
         console.log("Error answer effects");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -51,7 +51,7 @@ export default {
   width: 320px;
   height: 480px;
   background-color: white;
-  background-image: url("../assets/prog/h5bg.jpg");
+  // background-image: url("../assets/prog/h5bg.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;

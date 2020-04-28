@@ -51,7 +51,13 @@ export default new Vuex.Store({
         ];
     },
     setProcess(state, payload) {
-      state.currentProcess = payload;
+      if(processList.includes(payload)){
+        state.currentProcess = payload;
+        state.currentProcessId = processList.indexOf(payload);
+      }else{
+        console.error("error payload",payload);
+      }
+      
     },
     addPoints(state, payload) {
       if (Array.isArray(payload)) {

@@ -2,25 +2,25 @@
   <div class="vpQBox" :style="{ 'background-image': 'url(' + imgUrl + ')' }">
     <div class="inner_box">
       <div class="qtext">{{ template.id + " " + template.q }}</div>
-      <div class="qAnswer" @click="done(template.a.effect)">
+      <div class="qAnswer A" @click="done(template.a.effect)">
         <div style="display:inline-block;margin-right:5px;">A:</div>
         <div>
           {{ template.a.text }}
         </div>
       </div>
-      <div class="qAnswer" @click="done(template.b.effect)">
+      <div class="qAnswer B" @click="done(template.b.effect)">
         <div style="display:inline-block;margin-right:5px;">B:</div>
         <div>
           {{ template.b.text }}
         </div>
       </div>
-      <div class="qAnswer" @click="done(template.c.effect)">
+      <div class="qAnswer C" @click="done(template.c.effect)">
         <div style="display:inline-block;margin-right:5px;">C:</div>
         <div>
           {{ template.c.text }}
         </div>
       </div>
-      <div class="qAnswer" @click="done(template.d.effect)">
+      <div class="qAnswer D" @click="done(template.d.effect)">
         <div style="display:inline-block;margin-right:5px;">D:</div>
         <div>
           {{ template.d.text }}
@@ -35,7 +35,7 @@ export default {
   name: "VPQBox",
   props: {
     template: Object,
-    imgUrl: String
+    imgUrl: String,
   },
 
   computed: {},
@@ -53,8 +53,8 @@ export default {
         console.log("Error answer effects");
       }
       this.$emit("done", "1");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -99,6 +99,8 @@ export default {
     line-height: 2rem;
     user-select: none;
     font-size: 1.4rem;
+    pointer-events: none;
+    visibility: hidden;
   }
 
   .qAnswer {
@@ -115,6 +117,14 @@ export default {
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
+
+    &.A,
+    &.B,
+    &.C,
+    &.D {
+      pointer-events: none;
+      visibility: hidden;
+    }
   }
 
   @media screen and (max-width: 400px) {

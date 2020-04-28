@@ -6,9 +6,9 @@
       :style="{ width: vpWidth + 'px', height: vpHeight + 'px' }"
     >
       <div id="index">
-        <img class="title" src="../assets/indexMainTitle.png" />
-        <img class="slogen" src="../assets/indexSubTitle.png" />
-        <div class="startBtn" @click="nextProcess">
+        <img class="title" src="../assets/ix/indexMainTitle.png" />
+        <img class="slogen" src="../assets/ix/indexSubTitle.png" />
+        <div class="startBtn" @click="nextProcess('Q1')">
           <div class="fluentBtn"></div>
         </div>
       </div>
@@ -16,52 +16,56 @@
         id="Q1"
         :template="questions[0]"
         :imgUrl="quesBG[0]"
-        @done="nextProcess"
+        @done="nextProcess('Q2')"
       />
       <VPQBox
         id="Q2"
         :template="questions[1]"
         :imgUrl="quesBG[1]"
-        @done="nextProcess"
+        @done="nextProcess('Q3')"
       />
       <VPQBox
         id="Q3"
         :template="questions[2]"
         :imgUrl="quesBG[2]"
-        @done="nextProcess"
+        @done="nextProcess('Q4')"
       />
       <VPQBox
         id="Q4"
         :template="questions[3]"
         :imgUrl="quesBG[3]"
-        @done="nextProcess"
+        @done="nextProcess('Q5')"
       />
       <VPQBox
         id="Q5"
         :template="questions[4]"
         :imgUrl="quesBG[4]"
-        @done="nextProcess"
+        @done="nextProcess('Q6')"
       />
       <VPQBox
         id="Q6"
         :template="questions[5]"
         :imgUrl="quesBG[5]"
-        @done="nextProcess"
+        @done="nextProcess('Q7')"
       />
       <VPQBox
         id="Q7"
         :template="questions[6]"
         :imgUrl="quesBG[6]"
-        @done="nextProcess"
+        @done="nextProcess()"
       />
       <div id="result">
-        <h1>{{ getTestResult() }}</h1>
+        <div
+          class="desc"
+          :style="{ backgroundImage: 'url(' + descUrl + ')' }"
+        ></div>
+        <div class="res_title"></div>
         <img
-          src="../assets/prog/dg.jpg"
-          alt=""
+          :src="resultUrl"
+          alt
           class="result_img"
           width="100%"
-          height="auto"
+          height="100%"
         />
       </div>
     </div>
@@ -86,14 +90,16 @@ export default {
       vpHeight: 480,
       bgColor: "#eee",
       quesBG: [
-        require("../assets/prog/q1.jpg"),
-        require("../assets/prog/q2.jpg"),
-        require("../assets/prog/q3.jpg"),
-        require("../assets/prog/q4.jpg"),
-        require("../assets/prog/q5.jpg"),
-        require("../assets/prog/q6.jpg"),
-        require("../assets/prog/q7.jpg"),
+        require("../assets/prog/qs/q1.jpg"),
+        require("../assets/prog/qs/q2.jpg"),
+        require("../assets/prog/qs/q3.jpg"),
+        require("../assets/prog/qs/q4.jpg"),
+        require("../assets/prog/qs/q5.jpg"),
+        require("../assets/prog/qs/q6.jpg"),
+        require("../assets/prog/qs/q7.jpg"),
       ],
+      descUrl: "",
+      resultUrl: "",
     };
   },
   computed: {
@@ -105,6 +111,15 @@ export default {
     },
     curProc() {
       return this.$store.state.currentProcess;
+    },
+    result() {
+      return this.getTestResult();
+    },
+    title() {
+      return this.getTitle();
+    },
+    subtitle() {
+      return this.getSubTitle();
     },
   },
   created() {
@@ -141,7 +156,9 @@ export default {
               animateCSS(".slogen", ["bounceInDown"], () => {
                 window.$(".startBtn").css("visibility", "visible");
                 // document.querySelector(".startBtn").classList.add("fluent");
-                animateCSS(".startBtn", ["fadeIn"]);
+                animateCSS(".startBtn", ["fadeIn"], () => {
+                  window.$(".startBtn").css("pointer-events", "auto");
+                });
               });
             });
           }, 50);
@@ -177,8 +194,80 @@ export default {
   },
 
   methods: {
-    nextProcess() {
-      this.$store.commit("nextProcess");
+    getTitle() {
+      const t = this.getTestResult();
+      switch (t) {
+        case "RD":
+          return "建筑师";
+        case "PM":
+          return "发明家";
+        case "PL":
+          return "冒险家";
+        case "OP":
+          return "政治家";
+        case "DG":
+          return "魔术师";
+      }
+    },
+    getSubTitle() {
+      const t = this.getTestResult();
+      switch (t) {
+        case "RD":
+          return "开发工程师";
+        case "PM":
+          return "产品经理";
+        case "PL":
+          return "游戏策划";
+        case "OP":
+          return "运营";
+        case "DG":
+          return "设计";
+      }
+    },
+    showAnswer(numStr) {
+      const rootPath = `#Q${numStr}`;
+      console.log("current rootpath", rootPath);
+      const quesPath = `${rootPath} .inner_box .qtext`;
+      const APath = `${rootPath} .inner_box .A`;
+      const BPath = `${rootPath} .inner_box .B`;
+      const CPath = `${rootPath} .inner_box .C`;
+      const DPath = `${rootPath} .inner_box .D`;
+      const AEle = window.$(APath);
+      const BEle = window.$(BPath);
+      const CEle = window.$(CPath);
+      const DEle = window.$(DPath);
+      setTimeout(() => {
+        window.$(quesPath).css({ visibility: "visible" });
+        animateCSS(quesPath, ["bounceInRight"]);
+      }, 0);
+      setTimeout(() => {
+        AEle.css({ visibility: "visible" });
+        animateCSS(APath, ["bounceInRight"]);
+      }, 500);
+      setTimeout(() => {
+        BEle.css({ visibility: "visible" });
+        animateCSS(BPath, ["bounceInRight"], () => {});
+      }, 800);
+      setTimeout(() => {
+        CEle.css({ visibility: "visible" });
+        animateCSS(CPath, ["bounceInRight"]);
+      }, 1100);
+      setTimeout(() => {
+        DEle.css({ visibility: "visible" });
+        animateCSS(DPath, ["bounceInRight"], () => {
+          AEle.css("pointer-events", "auto");
+          BEle.css("pointer-events", "auto");
+          CEle.css("pointer-events", "auto");
+          DEle.css("pointer-events", "auto");
+        });
+      }, 1400);
+    },
+    nextProcess(proc) {
+      console.log(typeof proc);
+      this.$store.commit(
+        typeof proc === "string" ? "setProcess" : "nextProcess",
+        proc
+      );
       console.log("current process", this.curProc);
       switch (this.curProc) {
         case "loading":
@@ -193,98 +282,135 @@ export default {
             window.$("#index .startBtn").css("visibility", "hidden");
             window.$("#Q1").css("visibility", "visible");
             this.bgColor = "#123";
-            animateCSS("#Q1", ["fadeIn"]);
+            animateCSS("#Q1", ["fadeIn"], () => {
+              this.showAnswer("1");
+            });
           });
           break;
         case "Q2":
           animateCSS("#Q1", ["fadeOut"], () => {
-            window.$("#Q1").css("visibility", "hidden");
+            window.$("#Q1").css("display", "none");
           });
           setTimeout(() => {
             window.$("#Q2").css("visibility", "visible");
             this.bgColor = "#223";
-            animateCSS("#Q2", ["fadeIn"]);
+            animateCSS("#Q2", ["fadeIn"], () => {
+              this.showAnswer("2");
+            });
           }, 200);
           break;
         case "Q3":
           animateCSS("#Q2", ["fadeOut"], () => {
-            window.$("#Q2").css("visibility", "hidden");
+            window.$("#Q2").css("display", "none");
           });
           setTimeout(() => {
             window.$("#Q3").css("visibility", "visible");
             this.bgColor = "#234";
-            animateCSS("#Q3", ["fadeIn"]);
+            animateCSS("#Q3", ["fadeIn"], () => {
+              this.showAnswer("3");
+            });
           }, 200);
           break;
         case "Q4":
           animateCSS("#Q3", ["fadeOut"], () => {
-            window.$("#Q3").css("visibility", "hidden");
+            window.$("#Q3").css("display", "none");
           });
           setTimeout(() => {
             window.$("#Q4").css("visibility", "visible");
             this.bgColor = "#234";
-            animateCSS("#Q4", ["fadeIn"]);
+            animateCSS("#Q4", ["fadeIn"], () => {
+              this.showAnswer("4");
+            });
           }, 200);
           break;
         case "Q5":
           animateCSS("#Q4", ["fadeOut"], () => {
-            window.$("#Q4").css("visibility", "hidden");
+            window.$("#Q4").css("display", "none");
           });
           setTimeout(() => {
             window.$("#Q5").css("visibility", "visible");
             this.bgColor = "#345";
-            animateCSS("#Q5", ["fadeIn"]);
+            animateCSS("#Q5", ["fadeIn"], () => {
+              this.showAnswer("5");
+            });
           }, 200);
           break;
         case "Q6":
           animateCSS("#Q5", ["fadeOut"], () => {
-            window.$("#Q5").css("visibility", "hidden");
+            window.$("#Q5").css("display", "none");
           });
           setTimeout(() => {
             window.$("#Q6").css("visibility", "visible");
             this.bgColor = "#357";
-            animateCSS("#Q6", ["fadeIn"]);
+            animateCSS("#Q6", ["fadeIn"], () => {
+              this.showAnswer("6");
+            });
           }, 200);
           break;
         case "Q7":
           animateCSS("#Q6", ["fadeOut"], () => {
-            window.$("#Q6").css("visibility", "hidden");
+            window.$("#Q6").css("display", "none");
           });
           setTimeout(() => {
             window.$("#Q7").css("visibility", "visible");
-            animateCSS("#Q7", ["fadeIn"]);
+            animateCSS("#Q7", ["fadeIn"], () => {
+              this.showAnswer("7");
+            });
           }, 200);
           break;
         case "displaying":
           console.log("in displaying");
+          this.descUrl = require(`../assets/rs/${this.result.toLowerCase()}_text.png`);
+          this.resultUrl = require(`../assets/prog/rs/${this.result.toLowerCase()}.jpg`);
+          window.$("#result .desc").addClass(this.result.toLowerCase());
+          window.$("#result .res_title").addClass(this.result.toLowerCase());
+          window.$("#result .res_subtitle").addClass(this.result.toLowerCase());
+          //! 待完成动态排版内容
+          /**
+          //* 1. 根据结果动态的图片src设置 ✅
+          //* 2. 根据结果动态的图片位置设置 ✅
+          //* 3. 结果展示动态效果实现 ✅
+          //* 4. 魔术师/建筑师等文字闪烁效果实现 ❌
+          */
           animateCSS("#Q7", ["fadeOut"], () => {
-            window.$("#Q7").css("visibility", "hidden");
+            window.$("#Q7").css("display", "none");
           });
           setTimeout(() => {
             window.$("#result").css("visibility", "visible");
+            //** 在这里上传数据 */
+
+            //** 无阻塞上传 用户无感知 */
             animateCSS("#result", ["flipInY"], () => {
-              //* 展示之后把result转换成图片，新加一个img标签然后覆盖在顶层，这样微信保存的图片就是没问题的了！！！
-              //TODO 已完成图片覆盖!
-              console.log("开始转换");
-              html2canvas(document.getElementById("result")).then(
-                (canvasObj) => {
-                  var context = canvasObj.getContext("2d");
-                  //!【重要】关闭抗锯齿
-                  context.mozImageSmoothingEnabled = false;
-                  context.webkitImageSmoothingEnabled = false;
-                  context.msImageSmoothingEnabled = false;
-                  context.imageSmoothingEnabled = false;
-                  const img = Canvas2Image.convertToImage(
-                    canvasObj,
-                    this.vpWidth * 2,
-                    this.vpHeight * 2,
-                    "png"
+              window.$("#result .res_title").css("visibility", "visible");
+              animateCSS("#result .res_title", ["bounceInDown"], () => {
+                window.$("#result .desc").css("visibility", "visible");
+
+                animateCSS("#result .desc", ["fadeInRight"], () => {
+                  //* 展示之后把result转换成图片，新加一个img标签然后覆盖在顶层，这样微信保存的图片就是没问题的了！！！
+                  //TODO 已完成图片覆盖!
+                  console.log("开始转换");
+                  html2canvas(document.getElementById("result")).then(
+                    (canvasObj) => {
+                      var context = canvasObj.getContext("2d");
+                      //!【重要】关闭抗锯齿
+                      context.mozImageSmoothingEnabled = false;
+                      context.webkitImageSmoothingEnabled = false;
+                      context.msImageSmoothingEnabled = false;
+                      context.imageSmoothingEnabled = false;
+                      const img = Canvas2Image.convertToImage(
+                        canvasObj,
+                        this.vpWidth * 2,
+                        this.vpHeight * 2,
+                        "png"
+                      );
+                      img.style.cssText =
+                        "position: absolute;top: 0;left: 0;width: 100%;opacity: 0;z-index: 20;";
+                      document.getElementById("result").appendChild(img);
+                      console.log("转换完成");
+                    }
                   );
-                  img.style.cssText =
-                    "position: absolute;top: 0;left: 0;width: 100%;opacity: 0;z-index: 20;";
-                  document.getElementById("result").appendChild(img);
-                }
-              );
+                });
+              });
             });
           }, 200);
           break;
@@ -331,7 +457,6 @@ div {
   left: 0px;
   right: 0px;
   bottom: 0px;
-  // background-image: url("../assets/prog/h5bg.jpg");
   transition: all 0.5s ease-in-out;
 }
 
@@ -344,7 +469,7 @@ div {
   font-family: FZKTJ;
   // border:4px solid white;
   #index {
-    background-image: url("../assets/prog/indexpro.jpg");
+    background-image: url("../assets/prog/ix/indexpro.jpg");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -379,7 +504,7 @@ div {
       width: 22.8125%;
       height: 12.5%;
       // background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #0ea9f4);
-      background-image: url("../assets/indexbtn_big.png");
+      background-image: url("../assets/ix/indexbtn_big.png");
       background-size: contain;
       z-index: 1;
       position: absolute;
@@ -393,6 +518,7 @@ div {
       cursor: pointer;
       visibility: hidden;
       user-select: none;
+      pointer-events: none;
     }
     .fluentBtn {
       position: absolute;
@@ -467,7 +593,6 @@ div {
 
   #result {
     z-index: 1008;
-    // background-image: url("../assets/prog/dg.jpg");
     // background-size: contain;
     // background-repeat: no-repeat;
     // background-position: center center;
@@ -499,6 +624,105 @@ div {
     height: 100%;
     z-index: -1;
   }
+
+  .desc {
+    position: absolute;
+    width: 61.5625%;
+    height: 32.70833%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    visibility: hidden;
+    &.dg {
+      top: 2.9918%;
+      right: 6.9009%;
+      width: 61.5625%;
+      height: 32.70833%;
+    }
+    &.rd {
+      bottom: 18.1485%;
+      right: 10.2879%;
+      width: 81.71875%;
+      height: 21.875%;
+    }
+    &.pl {
+      top: 10.019757%;
+      right: 3.51397%;
+      width: 61.09375%;
+      height: 34.270833%;
+    }
+    &.pm {
+      bottom: 18.6328%;
+      right: 11.176968%;
+      width: 83.234375%;
+      height: 24.0625%;
+    }
+    &.op {
+      top: 12.55997%;
+      right: 3.51397%;
+      width: 56.5625%;
+      height: 31.66667%;
+    }
+  }
+  .res_title {
+    // font-size: 30px;
+    // writing-mode: vertical-lr;
+    // text-shadow: #fff78280 0px 0px 24px;
+    // color:black;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    visibility: hidden;
+    &.rd {
+      background-image: url("../assets/rs/rd_title.png");
+      top: 35.111487440022579735%;
+      right: 7.9170194750211685013%;
+      width: 18.59375%;
+      height: 31.25%;
+    }
+    &.dg {
+      background-image: url("../assets/rs/dg_title.png");
+      top: 44.284504657070279424%;
+      left: 6.3787750493931696303%;
+      width: 18.75%;
+      height: 26.979166666666666667%;
+    }
+    &.pl {
+      background-image: url("../assets/rs/pl_title.png");
+      width: 19.0625%;
+      height: 31.041666666666666667%;
+      top: 6.0118543607112616427%;
+      right: 74.21676545300592718%;
+    }
+    &.pm {
+      background-image: url("../assets/rs/pm_title.png");
+      top: 7.9311318092012418854%;
+      right: 70.53344623200677392%;
+      width: 19.53125%;
+      height: 29.375%;
+    }
+    &.op {
+      background-image: url("../assets/rs/op_title.png");
+      top: 5.7860570138300874965%;
+      right: 74.470787468247248095%;
+      width: 19.0625%;
+      height: 26.979166666666666667%;
+    }
+  }
+
+  .res_subtitle {
+    font-size: 20px;
+    writing-mode: vertical-lr;
+    &.rd {
+    }
+    &.dg {
+    }
+    &.pl {
+    }
+    &.pm {
+    }
+    &.op {
+    }
+  }
 }
 
 .box-shadow {
@@ -513,20 +737,6 @@ div {
   100% {
     box-shadow: 0 0px 24px 0 rgba(255, 255, 255, 0.2);
   }
-}
-
-/* 首box展示 */
-#first_box {
-  width: 320px;
-  height: 480px;
-  background-color: white;
-  background-image: url("../assets/prog/h5bg.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
-  box-shadow: 0 2px 24px 0 rgba(0, 0, 0, 1);
-  visibility: hidden;
-  color: white;
 }
 
 /* @media screen and (min-width: 640px ){

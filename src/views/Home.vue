@@ -89,15 +89,16 @@ export default {
       vpWidth: 320,
       vpHeight: 480,
       bgColor: "#eee",
-      quesBG: [
-        require("../assets/prog/qs/q1.jpg"),
-        require("../assets/prog/qs/q2.jpg"),
-        require("../assets/prog/qs/q3.jpg"),
-        require("../assets/prog/qs/q4.jpg"),
-        require("../assets/prog/qs/q5.jpg"),
-        require("../assets/prog/qs/q6.jpg"),
-        require("../assets/prog/qs/q7.jpg"),
-      ],
+      // quesBG: [
+      //   require("../assets/prog/qs/q1.jpg"),
+      //   require("../assets/prog/qs/q2.jpg"),
+      //   require("../assets/prog/qs/q3.jpg"),
+      //   require("../assets/prog/qs/q4.jpg"),
+      //   require("../assets/prog/qs/q5.jpg"),
+      //   require("../assets/prog/qs/q6.jpg"),
+      //   require("../assets/prog/qs/q7.jpg"),
+      // ],
+      quesBG: ["", "", "", "", "", "", ""],
       descUrl: "",
       resultUrl: "",
     };
@@ -148,6 +149,15 @@ export default {
       if (window.loadDone && !(this.curProc === "index")) {
         window.$("#index").css("visibility", "visible");
         animateCSS("#index", ["zoomIn"], () => {
+          this.quesBG = [
+            require("../assets/prog/qs/q1.jpg"),
+            require("../assets/prog/qs/q2.jpg"),
+            require("../assets/prog/qs/q3.jpg"),
+            require("../assets/prog/qs/q4.jpg"),
+            require("../assets/prog/qs/q5.jpg"),
+            require("../assets/prog/qs/q6.jpg"),
+            require("../assets/prog/qs/q7.jpg"),
+          ];
           setTimeout(() => {
             document.querySelector("#viewport").classList.add("box-shadow");
             window.$(".title").css("visibility", "visible");

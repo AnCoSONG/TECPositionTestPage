@@ -8,7 +8,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://scutongxin.club:8088/', //对应自己的接口
+        target: 'https://scutongxin.club:8088/', //对应自己的接口
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/record/newRecord'

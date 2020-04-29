@@ -79,7 +79,7 @@ import VPQBox from "@/components/VPQBox.vue";
 import { animateCSS, questions, Canvas2Image } from "../utils";
 import html2canvas from "html2canvas";
 import axios from "axios";
-axios.defaults.baseURL = "https://scutongxin.club:8088";
+axios.defaults.baseURL = "https://scutongxin.club";
 
 export default {
   name: "Home",

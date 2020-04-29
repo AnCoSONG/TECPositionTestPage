@@ -1,3 +1,5 @@
+export const ossBUrl = 'https://tencentclub2020.oss-cn-beijing.aliyuncs.com/'
+
 export function animateCSS(element, animationNameList, callback) {
   const node = document.querySelector(element);
   node.classList.add("animated", ...animationNameList);

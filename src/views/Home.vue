@@ -103,6 +103,8 @@ export default {
       //   require("../assets/prog/qs/q7.jpg"),
       // ],
       quesBG: ["", "", "", "", "", "", ""],
+      descBG: ["","","","","",""],
+      resultBG: ["","","","","",""],
       descUrl: "",
       resultUrl: "",
       audio: null,
@@ -186,6 +188,11 @@ export default {
             require("../assets/prog/qs/q5.jpg"),
             require("../assets/prog/qs/q6.jpg"),
             require("../assets/prog/qs/q7.jpg"),
+          ];
+          //* 在此提前缓存全部的资源
+          this.descBG = [
+          ];
+          this.resultBG = [
           ];
           setTimeout(() => {
             document.querySelector("#viewport").classList.add("box-shadow");
@@ -372,7 +379,7 @@ export default {
           this.resultUrl = require(`../assets/prog/rs/${this.result.toLowerCase()}.jpg`);
           window.$("#result .desc").addClass(this.result.toLowerCase());
           window.$("#result .res_title").addClass(this.result.toLowerCase());
-          window.$("#result .res_subtitle").addClass(this.result.toLowerCase());
+          // window.$("#result .res_subtitle").addClass(this.result.toLowerCase());
           //! 待完成动态排版内容
           /**
           //* 1. 根据结果动态的图片src设置 ✅

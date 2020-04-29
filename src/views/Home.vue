@@ -11,6 +11,7 @@
         <div class="startBtn" @click="nextProcess('Q1')">
           <div class="fluentBtn"></div>
         </div>
+        <div class="musicBtn" @click="toggleMusic"></div>
       </div>
       <VPQBox
         id="Q1"
@@ -52,7 +53,7 @@
         id="Q7"
         :template="questions[6]"
         :imgUrl="quesBG[6]"
-        @done="nextProcess()"
+        @done="nextProcess('displaying')"
       />
       <div id="result">
         <div
@@ -77,6 +78,9 @@
 import VPQBox from "@/components/VPQBox.vue";
 import { animateCSS, questions, Canvas2Image } from "../utils";
 import html2canvas from "html2canvas";
+import axios from "axios";
+axios.defaults.baseURL = "http://scutongxin.club:8088";
+
 export default {
   name: "Home",
   components: {
@@ -101,6 +105,7 @@ export default {
       quesBG: ["", "", "", "", "", "", ""],
       descUrl: "",
       resultUrl: "",
+      audio: null,
     };
   },
   computed: {
@@ -113,14 +118,11 @@ export default {
     curProc() {
       return this.$store.state.currentProcess;
     },
+    optionsList() {
+      return this.$store.state.optionsList;
+    },
     result() {
       return this.getTestResult();
-    },
-    title() {
-      return this.getTitle();
-    },
-    subtitle() {
-      return this.getSubTitle();
     },
   },
   created() {
@@ -131,16 +133,42 @@ export default {
     const ratio = width / height;
     console.log(ratio);
     if (ratio < 2 / 3) {
-      this.vpWidth = width;
+      this.vpWidth = width > 560 ? 560 : width;
       this.vpHeight = Math.floor(this.vpWidth * 1.5);
     } else {
-      this.vpHeight = height;
+      this.vpHeight = height > 840 ? 840 : height;
       this.vpWidth = Math.floor((this.vpHeight * 2) / 3);
     }
+    this.audio = new Audio(require("../assets/The star.mp3"));
+    this.audio.loop = true;
+    this.audio.muted = true; //* 解决浏览器限制随机噪音禁止播放的问题
   },
 
   mounted() {
     console.log("mounted");
+    console.log(window.$(".home"));
+    this.$nextTick(() => {
+      window.$(".home").focus();
+      this.toggleMusic();
+    });
+    // axios
+    //   .post("/record/newRecord", {
+    //     optionsList: ["A", "B", "A", "B", "C", "D", "A"],
+    //     points: {
+    //       RD: 4,
+    //       PM: 3,
+    //       PL: 2,
+    //       OP: 0,
+    //       DG: 0,
+    //     },
+    //     result: "RD",
+    //   })
+    //   .then((res) => {
+    //     console.log("Success", res);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
 
     //* 首屏展示逻辑
     var interval = setInterval(() => {
@@ -148,6 +176,7 @@ export default {
       console.log(this.curProc);
       if (window.loadDone && !(this.curProc === "index")) {
         window.$("#index").css("visibility", "visible");
+
         animateCSS("#index", ["zoomIn"], () => {
           this.quesBG = [
             require("../assets/prog/qs/q1.jpg"),
@@ -181,59 +210,9 @@ export default {
     if (window.loadDone) {
       window.location.reload();
     }
-    // if (this.curProc === "index" || window.loadDone) {
-    //   this.$store.commit("setProcess", "index");
-    //   window.clearInterval(interval);
-    //   window.$("#index").css("visibility", "visible");
-    //   animateCSS("#index", ["slideInUp", "fast"], () => {
-    //     setTimeout(() => {
-    //       // document.querySelector("#viewport").classList.add("box-shadow");
-    //       window.$(".title").css("visibility", "visible");
-    //       animateCSS(".title", ["bounceInDown"], () => {
-    //         window.$(".slogen").css("visibility", "visible");
-    //         animateCSS(".slogen", ["flipInX"], () => {
-    //           window.$(".startBtn").css("visibility", "visible");
-    //           animateCSS(".startBtn", ["bounceIn"], () => {
-    //             document.querySelector(".startBtn").classList.add("fluent");
-    //           });
-    //         });
-    //       });
-    //     }, 50);
-    //   });
-    // }
   },
 
   methods: {
-    getTitle() {
-      const t = this.getTestResult();
-      switch (t) {
-        case "RD":
-          return "建筑师";
-        case "PM":
-          return "发明家";
-        case "PL":
-          return "冒险家";
-        case "OP":
-          return "政治家";
-        case "DG":
-          return "魔术师";
-      }
-    },
-    getSubTitle() {
-      const t = this.getTestResult();
-      switch (t) {
-        case "RD":
-          return "开发工程师";
-        case "PM":
-          return "产品经理";
-        case "PL":
-          return "游戏策划";
-        case "OP":
-          return "运营";
-        case "DG":
-          return "设计";
-      }
-    },
     showAnswer(numStr) {
       const rootPath = `#Q${numStr}`;
       console.log("current rootpath", rootPath);
@@ -272,7 +251,26 @@ export default {
         });
       }, 1400);
     },
+    toggleMusic() {
+      if (this.audio.paused) {
+        this.audio.muted = false;
+        this.audio.play();
+        window
+          .$(".musicBtn")
+          .addClass("playing")
+          .removeClass("paused");
+      } else {
+        this.audio.muted = false;
+        this.audio.pause();
+        window.$(".musicBtn").addClass("paused");
+      }
+    },
     nextProcess(proc) {
+      console.log("下一个",proc)
+      if(proc===this.curProc){
+        console.log("重复请求")
+        return
+      }
       console.log(typeof proc);
       this.$store.commit(
         typeof proc === "string" ? "setProcess" : "nextProcess",
@@ -388,13 +386,31 @@ export default {
           setTimeout(() => {
             window.$("#result").css("visibility", "visible");
             //** 在这里上传数据 */
-
+            const recordData = {
+              optionsList: this.optionsList,
+              points: this.points,
+              result: this.result,
+            };
+            console.log(recordData);
+            axios
+              .post("/record/newRecord", {
+                ...recordData,
+              })
+              .then((res) => {
+                if(res.status === 200){
+                  console.log("Success", res);
+                }else{
+                  console.warn("Something went wrong", res);
+                }
+              })
+              .catch((err) => {
+                console.error(err);
+              });
             //** 无阻塞上传 用户无感知 */
-            animateCSS("#result", ["flipInY"], () => {
+            animateCSS("#result", ["bounceInDown"], () => {
               window.$("#result .res_title").css("visibility", "visible");
               animateCSS("#result .res_title", ["bounceInDown"], () => {
                 window.$("#result .desc").css("visibility", "visible");
-
                 animateCSS("#result .desc", ["fadeInRight"], () => {
                   //* 展示之后把result转换成图片，新加一个img标签然后覆盖在顶层，这样微信保存的图片就是没问题的了！！！
                   //TODO 已完成图片覆盖!
@@ -433,10 +449,11 @@ export default {
     getTestResult() {
       const maxVal = Math.max(...Object.values(this.points));
       console.log(maxVal);
-      return Object.keys(this.points)
+      const resultList = Object.keys(this.points)
         .filter((e) => this.points[e] === maxVal)
         .toString()
-        .split(",")[0];
+        .split(",");
+      return resultList[Math.floor(Math.random() * resultList.length)];
     },
   },
 };
@@ -489,6 +506,37 @@ div {
     color: white;
 
     z-index: 1;
+
+    .musicBtn {
+      position: absolute;
+      bottom: 5%;
+      left: 50%;
+      cursor: pointer;
+      pointer-events: none;
+      width: 9%;
+      height: 6%;
+      background-image: url("../assets/ix/music.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform: translateX(-50%);
+      animation-fill-mode: forwards;
+      &.playing {
+        animation: musicDiscRotation 4s linear infinite;
+        pointer-events: auto;
+      }
+      &.paused {
+        animation-play-state: paused;
+      }
+    }
+
+    @keyframes musicDiscRotation {
+      0% {
+        transform: translateX(-50%) rotate(0deg);
+      }
+      100% {
+        transform: translateX(-50%) rotate(360deg);
+      }
+    }
 
     .title {
       visibility: hidden;

@@ -36,7 +36,8 @@ export default new Vuex.Store({
       PL: 0, // 策划
       DG: 0, // 设计
       OP: 0 // 运营
-    }
+    },
+    optionsList:[]
   },
   mutations: {
     loaded(state) {
@@ -68,6 +69,12 @@ export default new Vuex.Store({
         state.points[exchange[payload]] += 1;
       }
       console.log("current points", state.points);
+    },
+
+    pushOption(state,payload){
+      if(typeof payload === 'string'){
+        state.optionsList.push(payload)
+      }
     }
   },
   actions: {},

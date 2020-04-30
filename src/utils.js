@@ -1,4 +1,82 @@
+import html2canvas from 'html2canvas'
 export const ossBUrl = 'https://tencentclub2020.oss-cn-beijing.aliyuncs.com/'
+
+export const dirStruc = {
+  ix:'prog/ix/indexpro.jpg',
+  q1:'prog/qs/q1.jpg',
+  q2:'prog/qs/q2.jpg',
+  q3:'prog/qs/q3.jpg',
+  q4:'prog/qs/q4.jpg',
+  q5:'prog/qs/q5.jpg',
+  q6:'prog/qs/q6.jpg',
+  q7:'prog/qs/q7.jpg',
+  dg:'prog/rs/dg.jpg',
+  op:'prog/rs/op.jpg',
+  pl:'prog/rs/pl.jpg',
+  pm:'prog/rs/pm.jpg',
+  rd:'prog/rs/rd.jpg',
+  dg_text:'rs/dg_text.jpg',
+  op_text:'rs/op_text.jpg',
+  pl_text:'rs/pl_text.jpg',
+  pm_text:'rs/pm_text.jpg',
+  rd_text:'rs/rd_text.jpg',
+  music:'The star.mp3'
+}
+
+export const getOSSUrl = (key)=>{
+  return ossBUrl + dirStruc[key];
+}
+
+export function convert2img(domPath) {
+
+  const cntElem = window.$(domPath)[0];
+  if(typeof cntElem === 'undefined'){
+    console.error("dom错误")
+    return
+  }
+
+  const shareContent = cntElem;//需要截图的包裹的（原生的）DOM 对象
+  const width = shareContent.offsetWidth; //获取dom 宽度
+  const height = shareContent.offsetHeight; //获取dom 高度
+  const canvas = document.createElement("canvas"); //创建一个canvas节点
+  const scale = 2; //定义任意放大倍数 支持小数
+  canvas.width = width * scale; //定义canvas 宽度 * 缩放
+  canvas.height = height * scale; //定义canvas高度 *缩放
+  // canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
+  const opts = {
+      scale: scale, // 添加的scale 参数
+      canvas: canvas, //自定义 canvas
+      logging: true, //日志开关，便于查看html2canvas的内部执行流程
+      width: width, //dom 原始宽度
+      height: height,
+      useCORS: true // 【重要】开启跨域配置
+  };
+
+  html2canvas(shareContent, opts).then(function (canvas) {
+
+      const context = canvas.getContext('2d');
+      // 【重要】关闭抗锯齿
+      context.mozImageSmoothingEnabled = false;
+      context.webkitImageSmoothingEnabled = false;
+      context.msImageSmoothingEnabled = false;
+      context.imageSmoothingEnabled = false;
+      
+      // 【重要】默认转化的格式为png,也可设置为其他格式
+      var img = Canvas2Image.convertToPNG(canvas, canvas.width, canvas.height);
+      window.$(img).css({
+          'z-index': 1100,
+          position:'absolute',
+          width: '100%',
+          height: '100%',
+          top:0,
+          left:0,
+          opacity: 0,
+      });
+
+      cntElem.appendChild(img);
+      console.log("转换完成");
+  });
+}
 
 export function animateCSS(element, animationNameList, callback) {
   const node = document.querySelector(element);

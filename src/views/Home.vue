@@ -62,8 +62,12 @@
         @done="nextProcess('displaying')"
       />
       <div id="result">
-        <div class="desc"></div>
-        <div class="res_title"></div>
+        <div class="desc">
+          <img :src="descUrl" alt="" style="width:100%;height:100%">
+        </div>
+        <div class="res_title">
+          <img :src="res_titleUrl" alt="" style="width:100%;height:100%">
+        </div>
         <img
           :src="resultUrl"
           alt
@@ -111,6 +115,7 @@ export default {
       resultBG: ["", "", "", "", "", ""],
       descUrl: "",
       resultUrl: "",
+      res_titleUrl: "",
       audio: null,
     };
   },
@@ -381,12 +386,12 @@ export default {
           break;
         case "displaying":
           console.log("in displaying");
-          //this.descUrl = `https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/${this.result.toLowerCase()}_text.png`;
+          this.descUrl = `https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/${this.result.toLowerCase()}_text.png`;
           this.resultUrl = `https://tencentclub2020.oss-cn-beijing.aliyuncs.com/prog/rs/${this.result.toLowerCase()}.jpg`;
+          this.res_titleUrl = `https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/${this.result.toLowerCase()}_title.png`
           // this.resultUrl = require(`../assets/prog/rs/${this.result.toLowerCase()}.jpg`);
           window.$("#result .desc").addClass(this.result.toLowerCase());
           window.$("#result .res_title").addClass(this.result.toLowerCase());
-          // window.$("#result .res_subtitle").addClass(this.result.toLowerCase());
           //! 待完成动态排版内容
           /**
           //* 1. 根据结果动态的图片src设置 ✅
@@ -429,7 +434,7 @@ export default {
                   //* 展示之后把result转换成图片，新加一个img标签然后覆盖在顶层，这样微信保存的图片就是没问题的了！！！
                   //TODO 已完成图片覆盖!
                   console.log("开始转换");
-                  convert2img('#result');
+                  convert2img('result'); //有一定的改善 但是需要修改bg为img
                   // html2canvas(document.getElementById("result"), {
                   //   scale:window.devicePixelRatio,
                   //   width:this.vpWidth,
@@ -716,35 +721,35 @@ div {
       right: 6.9009%;
       width: 61.5625%;
       height: 32.70833%;
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/dg_text.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/dg_text.png");
     }
     &.rd {
       bottom: 18.1485%;
       right: 10.2879%;
       width: 81.71875%;
       height: 21.875%;
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/rd_text.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/rd_text.png");
     }
     &.pl {
       top: 10.019757%;
       right: 3.51397%;
       width: 61.09375%;
       height: 34.270833%;
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pl_text.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pl_text.png");
     }
     &.pm {
       bottom: 18.6328%;
       right: 11.176968%;
       width: 83.234375%;
       height: 24.0625%;
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pm_text.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pm_text.png");
     }
     &.op {
       top: 12.55997%;
       right: 3.51397%;
       width: 56.5625%;
       height: 31.66667%;
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/op_text.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/op_text.png");
     }
   }
   .res_title {
@@ -757,54 +762,39 @@ div {
     background-repeat: no-repeat;
     visibility: hidden;
     &.rd {
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/rd_title.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/rd_title.png");
       top: 35.111487440022579735%;
       right: 7.9170194750211685013%;
       width: 18.59375%;
       height: 31.25%;
     }
     &.dg {
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/dg_title.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/dg_title.png");
       top: 44.284504657070279424%;
       left: 6.3787750493931696303%;
       width: 18.75%;
       height: 26.979166666666666667%;
     }
     &.pl {
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pl_title.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pl_title.png");
       width: 19.0625%;
       height: 31.041666666666666667%;
       top: 6.0118543607112616427%;
       right: 74.21676545300592718%;
     }
     &.pm {
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pm_title.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pm_title.png");
       top: 7.9311318092012418854%;
       right: 70.53344623200677392%;
       width: 19.53125%;
       height: 29.375%;
     }
     &.op {
-      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/op_title.png");
+      // background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/op_title.png");
       top: 5.7860570138300874965%;
       right: 74.470787468247248095%;
       width: 19.0625%;
       height: 26.979166666666666667%;
-    }
-  }
-
-  .res_subtitle {
-    font-size: 20px;
-    writing-mode: vertical-lr;
-    &.rd {
-    }
-    &.dg {
-    }
-    &.pl {
-    }
-    &.pm {
-    }
-    &.op {
     }
   }
 }

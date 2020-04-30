@@ -6,8 +6,14 @@
       :style="{ width: vpWidth + 'px', height: vpHeight + 'px' }"
     >
       <div id="index">
-        <img class="title" src="../assets/ix/indexMainTitle.png" />
-        <img class="slogen" src="../assets/ix/indexSubTitle.png" />
+        <img
+          class="title"
+          src="https://tencentclub2020.oss-cn-beijing.aliyuncs.com/ix/indexMainTitle.png"
+        />
+        <img
+          class="slogen"
+          src="https://tencentclub2020.oss-cn-beijing.aliyuncs.com/ix/indexSubTitle.png"
+        />
         <div class="startBtn" @click="nextProcess('Q1')">
           <div class="fluentBtn"></div>
         </div>
@@ -56,14 +62,12 @@
         @done="nextProcess('displaying')"
       />
       <div id="result">
-        <div
-          class="desc"
-          :style="{ backgroundImage: 'url(' + descUrl + ')' }"
-        ></div>
+        <div class="desc"></div>
         <div class="res_title"></div>
         <img
           :src="resultUrl"
           alt
+          crossOrigin="*"
           class="result_img"
           width="100%"
           height="100%"
@@ -76,7 +80,7 @@
 // @ is an alias to /src
 // import QBox from "@/components/QBox.vue";
 import VPQBox from "@/components/VPQBox.vue";
-import { animateCSS, questions, Canvas2Image } from "../utils";
+import { animateCSS, questions, Canvas2Image, getOSSUrl } from "../utils";
 import html2canvas from "html2canvas";
 import axios from "axios";
 axios.defaults.baseURL = "https://scutongxin.club";
@@ -103,8 +107,8 @@ export default {
       //   require("../assets/prog/qs/q7.jpg"),
       // ],
       quesBG: ["", "", "", "", "", "", ""],
-      descBG: ["","","","","",""],
-      resultBG: ["","","","","",""],
+      descBG: ["", "", "", "", "", ""],
+      resultBG: ["", "", "", "", "", ""],
       descUrl: "",
       resultUrl: "",
       audio: null,
@@ -128,6 +132,7 @@ export default {
     },
   },
   created() {
+    console.log(getOSSUrl("q1"));
     console.log("created");
     //*检测设备宽度 高度 获取比例 -> 动态计算viewport大小
     const height = window.innerHeight;
@@ -141,7 +146,9 @@ export default {
       this.vpHeight = height > 840 ? 840 : height;
       this.vpWidth = Math.floor((this.vpHeight * 2) / 3);
     }
-    this.audio = new Audio(require("../assets/The star.mp3"));
+    this.audio = new Audio(
+      "https://tencentclub2020.oss-cn-beijing.aliyuncs.com/The star.mp3"
+    );
     this.audio.loop = true;
     this.audio.muted = true; //* 解决浏览器限制随机噪音禁止播放的问题
   },
@@ -181,19 +188,17 @@ export default {
 
         animateCSS("#index", ["zoomIn"], () => {
           this.quesBG = [
-            require("../assets/prog/qs/q1.jpg"),
-            require("../assets/prog/qs/q2.jpg"),
-            require("../assets/prog/qs/q3.jpg"),
-            require("../assets/prog/qs/q4.jpg"),
-            require("../assets/prog/qs/q5.jpg"),
-            require("../assets/prog/qs/q6.jpg"),
-            require("../assets/prog/qs/q7.jpg"),
+            getOSSUrl("q1"),
+            getOSSUrl("q2"),
+            getOSSUrl("q3"),
+            getOSSUrl("q4"),
+            getOSSUrl("q5"),
+            getOSSUrl("q6"),
+            getOSSUrl("q7"),
           ];
           //* 在此提前缓存全部的资源
-          this.descBG = [
-          ];
-          this.resultBG = [
-          ];
+          this.descBG = [];
+          this.resultBG = [];
           setTimeout(() => {
             document.querySelector("#viewport").classList.add("box-shadow");
             window.$(".title").css("visibility", "visible");
@@ -273,10 +278,10 @@ export default {
       }
     },
     nextProcess(proc) {
-      console.log("下一个",proc)
-      if(proc===this.curProc){
-        console.log("重复请求")
-        return
+      console.log("下一个", proc);
+      if (proc === this.curProc) {
+        console.log("重复请求");
+        return;
       }
       console.log(typeof proc);
       this.$store.commit(
@@ -292,6 +297,7 @@ export default {
           console.log("in Q1");
           animateCSS("#index", ["bounceOutUp"], () => {
             window.$("#index").css("visibility", "hidden");
+            window.$("#index .musicBtn").css("visibility", "hidden");
             window.$("#index .title").css("visibility", "hidden");
             window.$("#index .slogen").css("visibility", "hidden");
             window.$("#index .startBtn").css("visibility", "hidden");
@@ -375,8 +381,9 @@ export default {
           break;
         case "displaying":
           console.log("in displaying");
-          this.descUrl = require(`../assets/rs/${this.result.toLowerCase()}_text.png`);
-          this.resultUrl = require(`../assets/prog/rs/${this.result.toLowerCase()}.jpg`);
+          //this.descUrl = `https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/${this.result.toLowerCase()}_text.png`;
+          this.resultUrl = `https://tencentclub2020.oss-cn-beijing.aliyuncs.com/prog/rs/${this.result.toLowerCase()}.jpg`;
+          // this.resultUrl = require(`../assets/prog/rs/${this.result.toLowerCase()}.jpg`);
           window.$("#result .desc").addClass(this.result.toLowerCase());
           window.$("#result .res_title").addClass(this.result.toLowerCase());
           // window.$("#result .res_subtitle").addClass(this.result.toLowerCase());
@@ -404,9 +411,9 @@ export default {
                 ...recordData,
               })
               .then((res) => {
-                if(res.status === 200){
+                if (res.status === 200) {
                   console.log("Success", res);
-                }else{
+                } else {
                   console.warn("Something went wrong", res);
                 }
               })
@@ -422,26 +429,29 @@ export default {
                   //* 展示之后把result转换成图片，新加一个img标签然后覆盖在顶层，这样微信保存的图片就是没问题的了！！！
                   //TODO 已完成图片覆盖!
                   console.log("开始转换");
-                  html2canvas(document.getElementById("result")).then(
-                    (canvasObj) => {
-                      var context = canvasObj.getContext("2d");
-                      //!【重要】关闭抗锯齿
-                      context.mozImageSmoothingEnabled = false;
-                      context.webkitImageSmoothingEnabled = false;
-                      context.msImageSmoothingEnabled = false;
-                      context.imageSmoothingEnabled = false;
-                      const img = Canvas2Image.convertToImage(
-                        canvasObj,
-                        this.vpWidth * 2,
-                        this.vpHeight * 2,
-                        "png"
-                      );
-                      img.style.cssText =
-                        "position: absolute;top: 0;left: 0;width: 100%;opacity: 0;z-index: 20;";
-                      document.getElementById("result").appendChild(img);
-                      console.log("转换完成");
-                    }
-                  );
+                  html2canvas(document.getElementById("result"), {
+                    scale:window.devicePixelRatio,
+                    width:this.vpWidth,
+                    height:this.vpHeight,
+                    useCORS: true, //允许跨域图片
+                  }).then((canvasObj) => {
+                    var context = canvasObj.getContext("2d");
+                    //!【重要】关闭抗锯齿
+                    context.mozImageSmoothingEnabled = false;
+                    context.webkitImageSmoothingEnabled = false;
+                    context.msImageSmoothingEnabled = false;
+                    context.imageSmoothingEnabled = false;
+                    const img = Canvas2Image.convertToImage(
+                      canvasObj,
+                      this.vpWidth,
+                      this.vpHeight,
+                      "png"
+                    );
+                    img.style.cssText =
+                      "position: absolute;top: 0;left: 0;width: 100%;opacity: 0;z-index: 20;";
+                    document.getElementById("result").appendChild(img);
+                    console.log("转换完成");
+                  });
                 });
               });
             });
@@ -467,7 +477,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("../assets/fonts/fzktj-embed.css");
+@import url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/fonts/fzktj-embed.css");
 div {
   outline: none; //去掉点击效果
   user-select: none;
@@ -503,7 +513,7 @@ div {
   font-family: FZKTJ;
   // border:4px solid white;
   #index {
-    background-image: url("../assets/prog/ix/indexpro.jpg");
+    background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/prog/ix/indexpro.jpg");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -522,17 +532,20 @@ div {
       pointer-events: none;
       width: 9%;
       height: 6%;
-      background-image: url("../assets/ix/music.svg");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/ix/music.svg");
       background-size: contain;
       background-repeat: no-repeat;
       transform: translateX(-50%);
       animation-fill-mode: forwards;
+      transition: filter 0.5s linear;
       &.playing {
         animation: musicDiscRotation 4s linear infinite;
+        filter: drop-shadow(0 0 0.75rem #0cb9f4);
         pointer-events: auto;
       }
       &.paused {
         animation-play-state: paused;
+        filter: drop-shadow(0 0 0.1rem #0cb9f4);
       }
     }
 
@@ -569,7 +582,7 @@ div {
       width: 22.8125%;
       height: 12.5%;
       // background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #0ea9f4);
-      background-image: url("../assets/ix/indexbtn_big.png");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/ix/indexbtn_big.png");
       background-size: contain;
       z-index: 1;
       position: absolute;
@@ -702,30 +715,35 @@ div {
       right: 6.9009%;
       width: 61.5625%;
       height: 32.70833%;
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/dg_text.png");
     }
     &.rd {
       bottom: 18.1485%;
       right: 10.2879%;
       width: 81.71875%;
       height: 21.875%;
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/rd_text.png");
     }
     &.pl {
       top: 10.019757%;
       right: 3.51397%;
       width: 61.09375%;
       height: 34.270833%;
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pl_text.png");
     }
     &.pm {
       bottom: 18.6328%;
       right: 11.176968%;
       width: 83.234375%;
       height: 24.0625%;
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pm_text.png");
     }
     &.op {
       top: 12.55997%;
       right: 3.51397%;
       width: 56.5625%;
       height: 31.66667%;
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/op_text.png");
     }
   }
   .res_title {
@@ -738,35 +756,35 @@ div {
     background-repeat: no-repeat;
     visibility: hidden;
     &.rd {
-      background-image: url("../assets/rs/rd_title.png");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/rd_title.png");
       top: 35.111487440022579735%;
       right: 7.9170194750211685013%;
       width: 18.59375%;
       height: 31.25%;
     }
     &.dg {
-      background-image: url("../assets/rs/dg_title.png");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/dg_title.png");
       top: 44.284504657070279424%;
       left: 6.3787750493931696303%;
       width: 18.75%;
       height: 26.979166666666666667%;
     }
     &.pl {
-      background-image: url("../assets/rs/pl_title.png");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pl_title.png");
       width: 19.0625%;
       height: 31.041666666666666667%;
       top: 6.0118543607112616427%;
       right: 74.21676545300592718%;
     }
     &.pm {
-      background-image: url("../assets/rs/pm_title.png");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/pm_title.png");
       top: 7.9311318092012418854%;
       right: 70.53344623200677392%;
       width: 19.53125%;
       height: 29.375%;
     }
     &.op {
-      background-image: url("../assets/rs/op_title.png");
+      background-image: url("https://tencentclub2020.oss-cn-beijing.aliyuncs.com/rs/op_title.png");
       top: 5.7860570138300874965%;
       right: 74.470787468247248095%;
       width: 19.0625%;

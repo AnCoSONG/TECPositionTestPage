@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import {animateCSS } from '../utils'
 export default {
   name: "VPQBox",
   props: {
@@ -55,7 +56,11 @@ export default {
       } else {
         console.log("Error answer effects");
       }
-      this.$emit("done", "1");
+      animateCSS(`#Q${this.template.id} .inner_box .qAnswer.${answer}`,["pulse"],()=>{
+        setTimeout(()=>{
+          this.$emit("done");
+        },10)
+      })
     },
   },
 };

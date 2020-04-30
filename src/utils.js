@@ -1,5 +1,31 @@
 export const ossBUrl = 'https://tencentclub2020.oss-cn-beijing.aliyuncs.com/'
 
+export const dirStruc = {
+  ix:'prog/ix/indexpro.jpg',
+  q1:'prog/qs/q1.jpg',
+  q2:'prog/qs/q2.jpg',
+  q3:'prog/qs/q3.jpg',
+  q4:'prog/qs/q4.jpg',
+  q5:'prog/qs/q5.jpg',
+  q6:'prog/qs/q6.jpg',
+  q7:'prog/qs/q7.jpg',
+  dg:'prog/rs/dg.jpg',
+  op:'prog/rs/op.jpg',
+  pl:'prog/rs/pl.jpg',
+  pm:'prog/rs/pm.jpg',
+  rd:'prog/rs/rd.jpg',
+  dg_text:'rs/dg_text.jpg',
+  op_text:'rs/op_text.jpg',
+  pl_text:'rs/pl_text.jpg',
+  pm_text:'rs/pm_text.jpg',
+  rd_text:'rs/rd_text.jpg',
+  music:'The star.mp3'
+}
+
+export const getOSSUrl = (key)=>{
+  return ossBUrl + dirStruc[key];
+}
+
 export function animateCSS(element, animationNameList, callback) {
   const node = document.querySelector(element);
   node.classList.add("animated", ...animationNameList);

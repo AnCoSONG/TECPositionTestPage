@@ -80,8 +80,8 @@
 // @ is an alias to /src
 // import QBox from "@/components/QBox.vue";
 import VPQBox from "@/components/VPQBox.vue";
-import { animateCSS, questions, Canvas2Image, getOSSUrl } from "../utils";
-import html2canvas from "html2canvas";
+import { animateCSS, questions, getOSSUrl, convert2img } from "../utils";
+// import html2canvas from "html2canvas";
 import axios from "axios";
 axios.defaults.baseURL = "https://www.scutongxin.club";
 
@@ -429,29 +429,30 @@ export default {
                   //* 展示之后把result转换成图片，新加一个img标签然后覆盖在顶层，这样微信保存的图片就是没问题的了！！！
                   //TODO 已完成图片覆盖!
                   console.log("开始转换");
-                  html2canvas(document.getElementById("result"), {
-                    scale:window.devicePixelRatio,
-                    width:this.vpWidth,
-                    height:this.vpHeight,
-                    useCORS: true, //允许跨域图片
-                  }).then((canvasObj) => {
-                    var context = canvasObj.getContext("2d");
-                    //!【重要】关闭抗锯齿
-                    context.mozImageSmoothingEnabled = false;
-                    context.webkitImageSmoothingEnabled = false;
-                    context.msImageSmoothingEnabled = false;
-                    context.imageSmoothingEnabled = false;
-                    const img = Canvas2Image.convertToImage(
-                      canvasObj,
-                      this.vpWidth,
-                      this.vpHeight,
-                      "png"
-                    );
-                    img.style.cssText =
-                      "position: absolute;top: 0;left: 0;width: 100%;opacity: 0;z-index: 20;";
-                    document.getElementById("result").appendChild(img);
-                    console.log("转换完成");
-                  });
+                  convert2img('#result');
+                  // html2canvas(document.getElementById("result"), {
+                  //   scale:window.devicePixelRatio,
+                  //   width:this.vpWidth,
+                  //   height:this.vpHeight,
+                  //   useCORS: true, //允许跨域图片
+                  // }).then((canvasObj) => {
+                  //   var context = canvasObj.getContext("2d");
+                  //   //!【重要】关闭抗锯齿
+                  //   context.mozImageSmoothingEnabled = false;
+                  //   context.webkitImageSmoothingEnabled = false;
+                  //   context.msImageSmoothingEnabled = false;
+                  //   context.imageSmoothingEnabled = false;
+                  //   const img = Canvas2Image.convertToImage(
+                  //     canvasObj,
+                  //     this.vpWidth,
+                  //     this.vpHeight,
+                  //     "png"
+                  //   );
+                  //   img.style.cssText =
+                  //     "position: absolute;top: 0;left: 0;width: 100%;opacity: 0;z-index: 20;";
+                  //   document.getElementById("result").appendChild(img);
+                  //   console.log("转换完成");
+                  // });
                 });
               });
             });
